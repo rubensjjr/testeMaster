@@ -10,6 +10,6 @@ import com.example.api.domain.Estado;
 @Repository
 public interface EstadoRepository extends JpaRepository<Estado, Integer> {
 
-	//List<Estado> findAllByOrderByNameAsc();
+	// List<Estado> findAllByOrderByNameAsc();
 
 }

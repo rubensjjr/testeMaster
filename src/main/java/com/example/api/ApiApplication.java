@@ -48,16 +48,30 @@ public class ApiApplication implements CommandLineRunner {
 
 		estadoRepository.saveAll(Arrays.asList(estado1, estado2));
 		cidadeRepository.saveAll(Arrays.asList(cidade1, cidade2, cidade3));
-		
+
 		Customer customer1 = new Customer(null, "Rubens Junior", "Rubens@email.com");
-		
-		Endereco endereco1 = new Endereco(null, "Rua Lituania", "86", "Casa 1", "Vila curuca", "09280260", customer1, cidade1);
-		Endereco endereco2 = new Endereco(null, "Rua Vasco", "85", "Casa 5", "Vila sonia", "09280898", customer1, cidade3);
-		
-		customer1.getEnderecos().addAll(Arrays.asList(endereco1,endereco2));
-		
+
+		Endereco endereco1 = new Endereco(null, "Rua Lituania", "86", "Casa 1", "Vila curuca", "09280260", customer1,
+				cidade1);
+		Endereco endereco2 = new Endereco(null, "Rua Vasco", "85", "Casa 5", "Vila sonia", "09280898", customer1,
+				cidade3);
+
+		customer1.getEnderecos().addAll(Arrays.asList(endereco1, endereco2));
+
 		customerRepository.saveAll(Arrays.asList(customer1));
-		enderecoRepository.saveAll(Arrays.asList(endereco1,endereco2));
+		enderecoRepository.saveAll(Arrays.asList(endereco1, endereco2));
+
+		Customer customer2 = new Customer(null, "Jose Alfredo", "Jose@email.com");
+
+		Endereco endereco3 = new Endereco(null, "Rua Germania", "86", "Casa 1", "Vila industrial", "05845750", customer2,
+				cidade3);
+		Endereco endereco4 = new Endereco(null, "Rua Tels", "15", "Casa 2", "Vila ", "09280d898", customer2,
+				cidade1);
+
+		customer2.getEnderecos().addAll(Arrays.asList(endereco3, endereco4));
+
+		customerRepository.saveAll(Arrays.asList(customer2));
+		enderecoRepository.saveAll(Arrays.asList(endereco1, endereco4));
 
 	}
 

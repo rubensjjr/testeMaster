@@ -3,6 +3,8 @@ package com.example.api.web.rest;
 import java.net.URI;
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +18,7 @@ import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.example.api.domain.Customer;
+import com.example.api.dto.CustomerNewDTO;
 import com.example.api.service.CustomerService;
 
 @RestController
@@ -39,26 +42,28 @@ public class CustomerController {
 		return service.findById(id)
 				.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Customer not found"));
 	}
-	
-	//criando um novo recurso
-	@RequestMapping(method=RequestMethod.POST)
-	public ResponseEntity<Void> insert(@RequestBody Customer obj){ // convertendo para obj java com Request Body
+
+	// criando um novo recurso
+	@RequestMapping(method = RequestMethod.POST)
+	public ResponseEntity<Void> insert(@Valid @RequestBody CustomerNewDTO objDto) { // convertendo para obj java com
+																					// Request Body
+		Customer obj = service.fromDTO(objDto);
 		obj = service.insert(obj);
-		//fornecendo o URI do argumento
-		URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
-				.path("/{id}").buildAndExpand(obj.getId()).toUri();
+		// fornecendo o URI do argumento
+		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();
 		return ResponseEntity.created(uri).build();
 	}
-	
-	//atualizando um recurso
+
+	// atualizando um recurso
 	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
-	public ResponseEntity<Void> update(@RequestBody Customer obj, @PathVariable Integer id) {
+	public ResponseEntity<Void> update(@Valid @RequestBody Customer obj, @PathVariable Integer id) {
 		obj.setId(id);
 		obj = service.update(obj);
 		return ResponseEntity.noContent().build();
 	}
-	
-	//apagando um recurso
+
+	// apagando um recurso
+
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
 	public ResponseEntity<Void> delete(@PathVariable Integer id) {
 		service.delete(id);

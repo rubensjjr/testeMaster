@@ -15,19 +15,18 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 @Entity
 public class Cidade implements Serializable {
 	private static final long serialVersionUID = 1L;
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer id;
 	private String name;
-	
-	
+
 	@ManyToOne
-	@JoinColumn(name="estado_id") // definindo nome da chave estrangeira no banco
+	@JoinColumn(name = "estado_id") // definindo nome da chave estrangeira no banco
 	private Estado estado;
-	
+
 	public Cidade() {
-		
+
 	}
 
 	public Cidade(Integer id, String name, Estado estado) {
@@ -77,7 +76,5 @@ public class Cidade implements Serializable {
 		Cidade other = (Cidade) obj;
 		return Objects.equals(id, other.id);
 	}
-	
-	
 
 }

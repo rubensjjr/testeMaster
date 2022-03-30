@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -25,24 +26,21 @@ public class Customer implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 
-	//@Column(nullable = false)
+	// @Column(nullable = false)
 	@NotEmpty
 	private String name;
 
-	//@Column(nullable = false)
+	@Column(unique = true) // valida email iguais
 	@NotEmpty
 	@Email
 	private String email;
-	
-	
-	@OneToMany (mappedBy = "customer") // mapeando que o cliente pode ter varios endereços
+
+	@OneToMany(mappedBy = "customer", cascade = CascadeType.ALL) // mapeando que o cliente pode ter varios endereços
 	private List<Endereco> enderecos = new ArrayList<>();
 
-	public Customer () {
-		
+	public Customer() {
+
 	}
-	
-	
 
 	public Customer(Integer id, @NotEmpty String name, @NotEmpty @Email String email) {
 		super();
@@ -51,8 +49,6 @@ public class Customer implements Serializable {
 		this.email = email;
 		this.enderecos = enderecos;
 	}
-
-
 
 	public Integer getId() {
 		return id;

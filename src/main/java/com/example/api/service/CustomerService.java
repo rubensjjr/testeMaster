@@ -12,15 +12,23 @@ import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.example.api.domain.Cidade;
 import com.example.api.domain.Customer;
-import com.example.api.dto.CustomerDTOold;
+import com.example.api.domain.Endereco;
+import com.example.api.dto.CustomerNewDTO;
 import com.example.api.exceptions.DataIntegrityException;
 import com.example.api.repository.CustomerRepository;
+import com.example.api.repository.EnderecoRepository;
 
 @Service
 public class CustomerService {
-
+	
+	@Autowired
 	private CustomerRepository repository;
+	
+	@Autowired
+	private EnderecoRepository enderecoRepository;
+
 
 	@Autowired
 	public CustomerService(CustomerRepository repository) {
@@ -39,11 +47,13 @@ public class CustomerService {
 	@Transactional // salva o cliente e o endereço na mesma transação no banco
 	public Customer insert(Customer obj) {
 		obj.setId(null); // ao inserir o objeto, ele garante obj nulo
-		return repository.save(obj);
+		obj = repository.save(obj);
+		enderecoRepository.saveAll(obj.getEnderecos());
+		return obj;
 	}
 
 	public Customer update(Customer obj) {
-		findById(obj.getId());
+		//findById(obj.getId());
 		return repository.save(obj);
 	}
 
@@ -56,8 +66,13 @@ public class CustomerService {
 		}
 	}
 	
-//	public Customer fromDTO(CustomerDTO objDto) {
-//		throw new UnsupportedOperationException();
-//	}
+	public Customer fromDTO(CustomerNewDTO objDto) {
+		Customer customer = new Customer(null, objDto.getName(),objDto.getEmail());
+		Cidade cida = new Cidade(objDto.getCidadeId(), null , null);
+		Endereco endereco = new Endereco(null, objDto.getLogradouro(),objDto.getNumero(),objDto.getComplemento(),objDto.getBairro(),objDto.getCep(), customer,cida);
+		customer.getEnderecos().add(endereco);
+		
+		return customer;
+	}
 
 }
